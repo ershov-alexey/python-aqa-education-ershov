@@ -27,6 +27,7 @@ class TextBasedBrowser:
             self.tabs[namesList[0]] = f'{self.directory}/{namesList[0]}.txt'
             self.cache.appendleft(namesList[0])
 
+            
     @staticmethod
     def get_tags(content):
         tags = ['p', 'a', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
