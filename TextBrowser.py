@@ -20,12 +20,14 @@ class TextBasedBrowser:
             return tab.read()
 
     def cache_site(self, name, content):
-        if not self.tabs.get(name[:-4]):
-            with open(f'{self.directory}/{name[:-4]}.txt', 'w') as tab:
+        namesList = name.split('.')
+        if len(namesList) > 1 and not self.tabs.get(namesList[1]):
+            with open(f'{self.directory}/{namesList[0]}.txt', 'w') as tab:
                 tab.write(content)
-            self.tabs[name[:-4]] = f'{self.directory}/{name[:-4]}.txt'
-            self.cache.appendleft(self.tabs[name[:-4]])
+            self.tabs[namesList[0]] = f'{self.directory}/{namesList[0]}.txt'
+            self.cache.appendleft(namesList[0])
 
+            
     @staticmethod
     def get_tags(content):
         tags = ['p', 'a', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
@@ -50,7 +52,7 @@ class TextBasedBrowser:
     def request(self, url):
         request = requests.get(url)
         clean_page = self.get_tags(request.content)
-        self.cache_site(url[8:], clean_page)
+        self.cache_site(url.lstrip('https://'), clean_page)
         return clean_page
 
     def back_button(self):
